@@ -5,11 +5,68 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 	<properties>
+		<org.springframework.version>3.1.1.RELEASE</org.springframework.version>
 		<slf4j.version>1.6.6</slf4j.version>
 		<logback.version>1.0.6</logback.version>
+		<org.aspectj-version>1.6.10</org.aspectj-version>
+		<mybatis-version>3.1.1</mybatis-version>
 	</properties>
 	
   <dependencies>
+       <!-- spring begin -->
+       <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc-portlet</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+        <dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-context</artifactId>
+		  <version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-jdbc</artifactId>
+		  <version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-tx</artifactId>
+		  <version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>javax.annotation</groupId>
+		    <artifactId>jsr250-api</artifactId>
+		    <version>1.0</version>
+		</dependency>
+       <!-- spring end -->
+       
+        <!-- AspectJ begin-->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>
+		<dependency> 
+	       <groupId>org.aspectj</groupId >
+	       <artifactId>aspectjweaver</artifactId >
+	       <version>${org.aspectj-version}</version >
+	   </dependency>
+	   <dependency>
+		  <groupId>cglib</groupId>
+		  <artifactId>cglib-nodep</artifactId>
+		  <version>2.2</version>
+	   </dependency>
+	   <!-- AspectJ end-->
+	    
        <!-- LOG begin -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -28,5 +85,37 @@
         </dependency>
         <!-- LOG end -->
         
+        <dependency>
+		        <groupId>mysql</groupId>
+		        <artifactId>mysql-connector-java</artifactId>
+		        <version>5.0.8</version>
+		</dependency>
+		
+        <!-- 数据库连接池 begin -->
+        <dependency>  
+            <groupId>commons-dbcp</groupId>  
+            <artifactId>commons-dbcp</artifactId>  
+            <version>1.4</version>  
+        </dependency> 
+        <!-- 数据库连接池 end -->
+        
+        <!-- mybatis begin-->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>${mybatis-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis.caches</groupId>
+			<artifactId>mybatis-memcached</artifactId>
+			<version>1.0.0-beta1</version>
+		</dependency>
+		  <!-- mybatis end-->
+		  
   </dependencies>
 </project>
