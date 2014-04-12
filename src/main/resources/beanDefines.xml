@@ -22,7 +22,10 @@
     ">
     
     <context:component-scan base-package="com" />
-                 
+    
+    <import resource="mq.xml"/>
+      
+    <!-- mybatis begin -->  
     <task:annotation-driven/>
         <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
@@ -48,7 +51,9 @@
     <bean id="userService" class="com.mybatis.UserServiceImpl">
         <property name="userDao" ref="userDao"></property>
     </bean>
-      
+    <!-- mybatis end -->   
+     
+    <bean id="initLoader" lazy-init="false" class="com.mfy.util.InitLoader" init-method="init" />
      
     <bean id="emp" class="com.finder.mybatis.entity.Emp"></bean>
     
