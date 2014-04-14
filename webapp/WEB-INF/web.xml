@@ -25,18 +25,7 @@
         <servlet-name>springMVC</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
-    
-     <!--初始化日志配置文件 -->  
-	<context-param>
-        <param-name>logback.configurationFile</param-name>
-        <param-value>classpath:logback.xml</param-value>
-    </context-param>
-    
-    <listener>
-        <listener-class>com.mfy.log.LogContextListener</listener-class>
-    </listener>
  
-	 
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
