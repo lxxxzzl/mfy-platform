@@ -1,3 +1,4 @@
-#Tue Mar 18 18:11:38 CST 2014
 eclipse.preferences.version=1
+encoding//src/main/java/com/mq/test=UTF-8
+encoding//src/main/java/com/mq/test/spring/TestSpringJmsReceiver.java=UTF-8
 encoding/sql=UTF-8
