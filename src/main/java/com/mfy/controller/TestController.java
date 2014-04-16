@@ -29,8 +29,7 @@ public class TestController implements ApplicationContextAware{
 	//http://localhost:8080/mfy-platform/test/completeProcess/123.do
     @RequestMapping( value="/completeProcess/{id}.do" )
     public String completeProcess(HttpServletRequest request,HttpServletResponse response,@PathVariable String id){
-    	LOG.info("completeProcess:" + id + ", bean: " + this.applicationContext.getBean("emp"));
-        
+    	LOG.info("completeProcess:" + id );
         UserService userService = (UserService)applicationContext.getBean("userService");
         LOG.info(String.valueOf(userService.countAll()));
         return "ok";
