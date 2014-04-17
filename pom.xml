@@ -103,24 +103,6 @@
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
         </dependency>
-        
-           <!--  <dependency>
-		      <groupId>org.slf4j</groupId>
-		      <artifactId>slf4j-api</artifactId>
-		      <version>${slf4j.version}</version>
-		    </dependency>
-		    <dependency>
-		      <groupId>ch.qos.logback</groupId>
-		      <artifactId>logback-classic</artifactId>
-		      <version>${logback.version}</version>
-		    </dependency>
-		    <dependency>
-		      <groupId>ch.qos.logback</groupId>
-		      <artifactId>logback-core</artifactId>
-		      <version>${logback.version}</version>
-		    </dependency>-->
-		
-        
         <!-- LOG end -->
         
         
@@ -157,12 +139,6 @@
 	    <!-- mybatis end-->
 	    
 	    <!-- activeMQ begin-->
-	    
-	   <!--  <dependency>
-		  <groupId>org.apache.activemq</groupId>
-		  <artifactId>activemq-all</artifactId>
-		  <version>5.4.3</version>
-		</dependency> -->
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-core</artifactId>
@@ -173,7 +149,6 @@
 			<artifactId>activemq-pool</artifactId>
 			<version>5.7.0</version>
 		</dependency>
-		
 	    <!-- activeMQ end-->
 		  
   </dependencies>
