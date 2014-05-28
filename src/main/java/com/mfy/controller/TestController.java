@@ -3,6 +3,7 @@ package com.mfy.controller;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,8 +29,8 @@ public class TestController implements ApplicationContextAware{
 	
 	private ApplicationContext applicationContext;
 	
-	//@Resource
-	//private MailUtility mailUtility;
+	@Resource
+	private MailUtility mailUtility;
 	
 	//http://localhost:8080/mfy-platform/test/completeProcess/123.do
     @RequestMapping( value="/completeProcess/{id}.do" )
@@ -52,7 +53,6 @@ public class TestController implements ApplicationContextAware{
     @RequestMapping(value="/test") 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void test(){
-    	MailUtility mailUtility = (MailUtility) applicationContext.getBean("mailUtility");
         mailUtility.sendMail("huangcangbai");
         System.out.println("complete concurrencyOpt.");
     }

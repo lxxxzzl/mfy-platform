@@ -1,5 +1,6 @@
 package com.hcb.mc.controller;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,11 +17,18 @@ import com.hcb.mc.util.BeanUtil;
 @RequestMapping(value = "/hcb")
 public class HcbController {
 
+	@Resource
+	private BeanUtil beanUtil;
+	
+    /**
+     * http://localhost:8080/mfy-platform/hcb/test/1
+     * @param request
+     * @param response
+     * @param id
+     */
     @RequestMapping( value="/test/{id}" )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void test(HttpServletRequest request,HttpServletResponse response,@PathVariable String id){
-    	BeanUtil beanUtil = (BeanUtil) BeanUtil.applicationContext.getBean("beanUtil");
-		
 		System.out.println("beanUtil.getPlayer(): " + beanUtil.getPlayer());
 		System.out.println("beanUtil.getPlayerList(): " + beanUtil.getPlayerList());
 		System.out.println("beanUtil.getBeanInterfaceFactory(): " + beanUtil.getBeanInterfaceFactory());
