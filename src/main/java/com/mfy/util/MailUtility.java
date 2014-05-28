@@ -5,7 +5,9 @@ import java.util.concurrent.Future;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+@Service
 @Component
 public class MailUtility {
 
@@ -30,7 +32,7 @@ public class MailUtility {
     public Future<String> longOpt() {
         System.out.println("start longOpt..");
         try {
-            Thread.sleep(10*1000);
+            Thread.sleep(5*1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -24,10 +24,13 @@
      <!-- mq begin 
     <import resource="mq.xml"/>
      -->
-     <context:component-scan base-package="com" use-default-filters="false">
-	  <context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
+     <context:component-scan base-package="com">
+	  <!--<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />-->
+	  <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
-       
+      
+      <task:annotation-driven/>
+      
     <!-- mybatis begin -->  
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
@@ -56,8 +59,8 @@
     <!-- mybatis end -->   
     
 
-         <bean id="beanUtil" class="com.hcb.mc.util.BeanUtil"/>  
-     
+         <!--  <bean id="beanUtil" class="com.hcb.mc.util.BeanUtil"/>  
+     -->
     <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
         <property name="customEditors">
             <map>
@@ -71,5 +74,7 @@
     <bean id="factoryListEditor" class="org.springframework.beans.propertyeditors.CustomCollectionEditor">
         <constructor-arg name="collectionType" value="com.hcb.mc.factory.FactoryArrayList" type="java.lang.Class"></constructor-arg>
     </bean>
+     
+     <bean id="mailUtility" class="com.mfy.util.MailUtility"/>
      
 </beans> 
