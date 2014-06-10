@@ -4,6 +4,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class Player {
+	
+	/**
+	 * 
+	 */
 	private String name;
 
 	public String getName() {
