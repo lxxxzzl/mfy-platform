@@ -5,11 +5,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class Player {
 	
-	/**
-	 * 
-	 */
+
 	private String name;
 
+	/**
+	 * @return
+	 */
 	public String getName() {
 		return name;
 	}
