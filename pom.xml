@@ -47,6 +47,13 @@
 		  <version>3.0.7.RELEASE</version>
 		</dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>provided</scope>
+            <version>${org.springframework.version}</version>
+        </dependency>
+        
 		<dependency>
 		    <groupId>javax.annotation</groupId>
 		    <artifactId>jsr250-api</artifactId>
