@@ -5,16 +5,10 @@
 
   <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">  
     <property name="driverClass" value="com.mysql.jdbc.Driver" />  
-     
-    <property name="url" value="jdbc:mysql://10.10.30.120:3306/bpm_cfm" />  
-    <property name="username" value="bpmcfm"/>  
-    <property name="password" value="bpmcfm" />  
     
-     <!--  
-    <property name="url" value="jdbc:mysql://localhost:3310/bpm_cfm" />  
-    <property name="username" value="root" />  
+    <property name="url" value="jdbc:mysql://localhost:3306/bpm_cfm" />  
+    <property name="username" value="root"/>  
     <property name="password" value="" />  
-     -->
   </bean>  
 
   <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  

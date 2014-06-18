@@ -5,7 +5,7 @@
     <userTask id="usertask1" name="User Task" activiti:async="true"></userTask>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Service Task" activiti:class="com.hcb.test.mutiinstance.delegate.TestMutilInstanceDelegate"></serviceTask>
+    <serviceTask id="servicetask1" name="Service Task" activiti:class="org.activiti.engine.test.bpmn.multiinstance.delegate.TestMutilInstanceDelegate"></serviceTask>
     <sequenceFlow id="flow3" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
   </process>
