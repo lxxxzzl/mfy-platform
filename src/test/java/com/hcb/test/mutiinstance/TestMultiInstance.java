@@ -22,6 +22,7 @@ public class TestMultiInstance extends PluggableActivitiTestCase {
 		
 		ProcessInstanceQuery procQuery = runtimeService.createProcessInstanceQuery().superProcessInstanceId(proc.getId());
 		System.out.println("----------procQuery-------" + procQuery.count());
+		
 	}
 	
 }

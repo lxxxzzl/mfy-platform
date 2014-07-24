@@ -3,6 +3,7 @@
 	<name>mfy-platform</name>
 	<comment></comment>
 	<projects>
+		<project>activiti-engine</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

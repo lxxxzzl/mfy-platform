@@ -36,5 +36,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry exported="true" kind="src" path="/activiti-engine"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
