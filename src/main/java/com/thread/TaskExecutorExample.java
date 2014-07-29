@@ -10,8 +10,9 @@ public class TaskExecutorExample {
 	}
 
 	public void printMessages() {
-		for (int i = 0; i < 600; i++) {
+		for (int i = 0; i < 50; i++) {
 			taskExecutor.execute(new MessagePrinterTask("Message" + i));
+			
 		}
 	}
 

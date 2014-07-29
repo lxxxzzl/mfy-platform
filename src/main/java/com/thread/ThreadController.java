@@ -27,7 +27,7 @@ public class ThreadController implements ApplicationContextAware{
 	}
     
     /**
-     * localhost:8080/mfy-platform/thread/test/
+     * http://localhost:8080/mfy-platform/thread/test/
      */
     @RequestMapping(value="/test") 
     @ResponseStatus(HttpStatus.NO_CONTENT)

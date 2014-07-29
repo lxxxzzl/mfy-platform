@@ -37,6 +37,7 @@
    
 	<bean id="throwBpmnErrorDelegate" class="com.hcb.test.springactivititest.delegate.ThrowBpmnErrorDelegate" />
 	
+	<bean id="getSonCollecion" class="com.hcb.test.springactivititest.delegate.GetSonCollecion" />
 	
 	
 	
