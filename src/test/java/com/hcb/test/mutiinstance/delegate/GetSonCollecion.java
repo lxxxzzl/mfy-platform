@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class GetSonCollecion {
 
 	public List<String> getSonCollecion() {
