@@ -20,6 +20,11 @@
     http://www.springframework.org/schema/task 
     http://www.springframework.org/schema/task/spring-task-3.0.xsd">
      
+     
+     <!-- spring mvc -->
+     <import resource="springMVC.xml"/> 
+     
+     
      <!-- mq begin 
     <import resource="mq.xml"/>
      -->
