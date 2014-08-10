@@ -1,4 +1,4 @@
-package com.hcb.mc.util;
+package com.hcb.util;
 
 import javax.annotation.Resource;
 
@@ -7,10 +7,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
+import com.hcb.factory.FactoryList;
 import com.hcb.mc.bean.MutliBean;
 import com.hcb.mc.bean.Player;
 import com.hcb.mc.bean.PlayerList;
-import com.hcb.mc.factory.FactoryList;
 
 @Service
 public class BeanUtil implements ApplicationContextAware {

@@ -13,16 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.hcb.mc.bean.MutliBean;
-import com.hcb.mc.bean.MutliBeanB;
 import com.hcb.mc.bean.relation.AbstractBase;
-import com.hcb.mc.bean.relation.ConcreteA;
-import com.hcb.mc.util.BeanUtil;
+import com.hcb.util.BeanUtil;
 
 @Controller
-@RequestMapping(value = "/hcb")
-public class HcbController {
+@RequestMapping(value = "/bean-factory")
+public class BeanFactoryController {
 
-	private static Logger LOG = LoggerFactory.getLogger(HcbController.class);
+	private static Logger LOG = LoggerFactory.getLogger(BeanFactoryController.class);
 	
 	@Resource
 	private BeanUtil beanUtil;
@@ -31,7 +29,7 @@ public class HcbController {
 	private AbstractBase abstractBase;
 	
     /**
-     * http://localhost:8080/mfy-platform/hcb/test/1
+     * http://localhost:8080/mfy-platform/bean-factory/test/1
      * @param request
      * @param response
      * @param id
@@ -39,13 +37,13 @@ public class HcbController {
     @RequestMapping( value="/test/{id}" )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void test(HttpServletRequest request,HttpServletResponse response,@PathVariable String id){
-//		LOG.info("beanUtil.getPlayer(): " + beanUtil.getPlayer());
-//		LOG.info("beanUtil.getPlayerList(): " + beanUtil.getPlayerList());
-//		LOG.info("beanUtil.getBeanInterfaceFactory(): " + beanUtil.getBeanInterfaceFactory());
-//		LOG.info("beanUtil.getBeanInterfaceFactory().size(): " + beanUtil.getBeanInterfaceFactory().size());
-//		
-//		MutliBean mutliBean = beanUtil.getBeanInterfaceFactory().getBean("a");
-//		mutliBean.methodA();
+		LOG.info("beanUtil.getPlayer(): " + beanUtil.getPlayer());
+		LOG.info("beanUtil.getPlayerList(): " + beanUtil.getPlayerList());
+		LOG.info("beanUtil.getBeanInterfaceFactory(): " + beanUtil.getBeanInterfaceFactory());
+		LOG.info("beanUtil.getBeanInterfaceFactory().size(): " + beanUtil.getBeanInterfaceFactory().size());
+		
+		MutliBean mutliBean = beanUtil.getBeanInterfaceFactory().getBean("a");
+		mutliBean.methodA();
 		
 		LOG.info("this.abstractBase.whoami:" + this.abstractBase.whoami());
 		//LOG.info("this.concrete.whoami:" + this.concrete.whoami());

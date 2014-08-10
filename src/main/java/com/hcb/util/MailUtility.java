@@ -1,4 +1,4 @@
-package com.hcb.mc.util;
+package com.hcb.util;
 
 import java.util.concurrent.Future;
 
@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.hcb.web.filter.PostJsonParseFilter;
 
 @Service
 @Component

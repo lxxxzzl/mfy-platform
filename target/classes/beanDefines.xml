@@ -71,7 +71,7 @@
     <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
         <property name="customEditors">
             <map>
-                <entry key="com.hcb.mc.factory.FactoryList">
+                <entry key="com.hcb.factory.FactoryList">
                     <ref bean="factoryListEditor"/>
                 </entry>
             </map>
@@ -79,7 +79,7 @@
     </bean>
     
     <bean id="factoryListEditor" class="org.springframework.beans.propertyeditors.CustomCollectionEditor">
-        <constructor-arg name="collectionType" value="com.hcb.mc.factory.FactoryArrayList" type="java.lang.Class"></constructor-arg>
+        <constructor-arg name="collectionType" value="com.hcb.factory.FactoryArrayList" type="java.lang.Class"></constructor-arg>
     </bean>
     
 </beans> 

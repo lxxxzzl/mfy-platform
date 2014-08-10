@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.hcb.mc.util.MailUtility;
 import com.hcb.mybatis.UserService;
+import com.hcb.util.MailUtility;
 
 @Controller
 @RequestMapping(value = "/bpmAsyncTest")

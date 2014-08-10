@@ -1,4 +1,4 @@
-package com.hcb.mc.factory;
+package com.hcb.factory;
 
 import java.util.List;
 

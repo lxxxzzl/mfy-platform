@@ -1,4 +1,4 @@
-package com.hcb.mc.log;
+package com.hcb.log;
 
 import java.util.HashMap;
 import java.util.Map;
