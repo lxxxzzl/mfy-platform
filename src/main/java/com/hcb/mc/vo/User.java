@@ -1,4 +1,4 @@
-package com.mfy.vo;
+package com.hcb.mc.vo;
 
 public class User {
 	private int id = 111;

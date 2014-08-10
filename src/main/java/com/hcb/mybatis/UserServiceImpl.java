@@ -1,5 +1,4 @@
-package com.mybatis;
-
+package com.hcb.mybatis;
 public class UserServiceImpl implements UserService {
     private UserDao userDao;
 

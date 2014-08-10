@@ -1,4 +1,4 @@
-package com.mq.test.main;
+package com.hcb.mq.main;
 
 import java.util.Date;
 

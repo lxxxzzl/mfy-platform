@@ -1,4 +1,4 @@
-package com.mfy.util;
+package com.hcb.mc.util;
 
 import java.util.concurrent.Future;
 

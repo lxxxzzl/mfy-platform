@@ -1,4 +1,4 @@
-package com.mq.test.spring;
+package com.hcb.mq.spring;
 
 import java.util.Date;
 
