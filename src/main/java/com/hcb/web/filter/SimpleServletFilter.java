@@ -37,7 +37,7 @@ public class SimpleServletFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain filterChain) throws IOException, ServletException {
-		LOG.info(this.filterName + " doFilter");
+		//LOG.info(this.filterName + " doFilter");
 		filterChain.doFilter(request, response);
 	}
 	

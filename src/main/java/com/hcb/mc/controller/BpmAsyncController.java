@@ -1,4 +1,4 @@
-package com.mfy.controller;
+package com.hcb.mc.controller;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -22,17 +22,17 @@ import com.mfy.util.MailUtility;
 import com.mybatis.UserService;
 
 @Controller
-@RequestMapping(value = "/test")
-public class TestController implements ApplicationContextAware{
+@RequestMapping(value = "/bpmAsyncTest")
+public class BpmAsyncController implements ApplicationContextAware{
 
-	static Logger LOG = LoggerFactory.getLogger(TestController.class);
+	static Logger LOG = LoggerFactory.getLogger(BpmAsyncController.class);
 	
 	private ApplicationContext applicationContext;
 	
 	@Resource
 	private MailUtility mailUtility;
 	
-	//http://localhost:8080/mfy-platform/test/completeProcess/123.do
+	//http://localhost:8080/mfy-platform/bpmAsyncTest/completeProcess/123.do
     @RequestMapping( value="/completeProcess/{id}.do" )
     public String completeProcess(HttpServletRequest request,HttpServletResponse response,@PathVariable String id){
     	LOG.info("completeProcess:" + id );
@@ -48,17 +48,17 @@ public class TestController implements ApplicationContextAware{
 	}
     
     /**
-     * localhost:8080/mfy-platform/test/
+     * localhost:8080/mfy-platform/bpmAsyncTest/asyncSendMail
      */
-    @RequestMapping(value="/test") 
+    @RequestMapping(value="/asyncSendMail") 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void test(){
+    public void asyncSendMail(){
         mailUtility.sendMail("huangcangbai");
         LOG.info("complete concurrencyOpt.");
     }
     
     /**
-     * http://localhost:8080/mfy-platform/test/testAsyncResp/
+     * http://localhost:8080/mfy-platform/bpmAsyncTest/testAsyncResp/
      * @throws ExecutionException 
      * @throws InterruptedException 
      */
@@ -68,14 +68,12 @@ public class TestController implements ApplicationContextAware{
     	long startTime = System.currentTimeMillis();
     	MailUtility mailUtility = (MailUtility) applicationContext.getBean("mailUtility");
     	Future<String> future = mailUtility.longOpt();
-//    	String asyncResp = future.get();
-//    	LOG.info("end get AsyncResp:" + asyncResp);
-        try {
-            Thread.sleep(5*1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        String asyncResp = future.get();
+    	
+    	//如果spring异步task配置ok的话，下面这句日志与longOpt方法并行执行。
+    	//否则，面这句日志将在longOpt方法执行完毕后才打印
+    	LOG.info("other operate" );
+        
+    	String asyncResp = future.get();
     	LOG.info("end get AsyncResp:" + asyncResp);
         LOG.info("complete testAsyncResp. time is: " + (System.currentTimeMillis()-startTime)+"ms");
     }

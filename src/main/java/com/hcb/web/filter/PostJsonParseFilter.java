@@ -32,7 +32,7 @@ public class PostJsonParseFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request,
 			HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		LOG.info(this.getFilterName() + " doFilterInternal");
+		//LOG.info(this.getFilterName() + " doFilterInternal");
 		filterChain.doFilter(request, response);
 	}
 
