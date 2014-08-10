@@ -1,1 +1,0 @@
-#mfy-platform

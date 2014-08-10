@@ -5,18 +5,102 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 	<properties>
-		<slf4j.version>1.6.6</slf4j.version>
+		<org.springframework.version>3.1.1.RELEASE</org.springframework.version>
+		<slf4j.version>1.7.5</slf4j.version>
 		<logback.version>1.0.6</logback.version>
+		<org.aspectj-version>1.6.10</org.aspectj-version>
+		<mybatis-version>3.1.1</mybatis-version>
 	</properties>
 	
   <dependencies>
-       <!-- LOG begin -->
+       <!-- spring begin -->
+       <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc-portlet</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
         <dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-context</artifactId>
+		  <version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-jdbc</artifactId>
+		  <version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-tx</artifactId>
+		  <version>${org.springframework.version}</version>
+		</dependency>
+        <dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-jms</artifactId>
+		  <version>3.0.7.RELEASE</version>
+		</dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>provided</scope>
+            <version>${org.springframework.version}</version>
+        </dependency>
+        
+		<dependency>
+		    <groupId>javax.annotation</groupId>
+		    <artifactId>jsr250-api</artifactId>
+		    <version>1.0</version>
+		</dependency>
+       <!-- spring end -->
+       
+        <!-- AspectJ begin-->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>
+		<dependency> 
+	       <groupId>org.aspectj</groupId >
+	       <artifactId>aspectjweaver</artifactId >
+	       <version>${org.aspectj-version}</version >
+	   </dependency>
+	   <dependency>
+		  <groupId>cglib</groupId>
+		  <artifactId>cglib-nodep</artifactId>
+		  <version>2.2</version>
+	   </dependency>
+	   <!-- AspectJ end-->
+	    
+	    <!-- tomcat begin-->
+	  <!--  <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-catalina</artifactId>
+            <version>7.0.29</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-coyote</artifactId>
+            <version>7.0.29</version>
+            <scope>provided</scope>
+        </dependency>-->
+        <!-- tomcat end-->
+        
+       <!-- LOG begin -->
+       <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-        <dependency>
+        <dependency> 
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
             <version>${slf4j.version}</version>
@@ -28,5 +112,84 @@
         </dependency>
         <!-- LOG end -->
         
+        
+        <dependency>
+		        <groupId>mysql</groupId>
+		        <artifactId>mysql-connector-java</artifactId>
+		        <version>5.0.8</version>
+		</dependency>
+		
+        <!-- 数据库连接池 begin -->
+        <dependency>  
+            <groupId>commons-dbcp</groupId>  
+            <artifactId>commons-dbcp</artifactId>  
+            <version>1.4</version>  
+        </dependency> 
+        <!-- 数据库连接池 end -->
+        
+        <!-- mybatis begin-->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>${mybatis-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis.caches</groupId>
+			<artifactId>mybatis-memcached</artifactId>
+			<version>1.0.0-beta1</version>
+		</dependency>
+	    <!-- mybatis end-->
+	    
+	    <!-- activeMQ begin-->
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-core</artifactId>
+			<version>5.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-pool</artifactId>
+			<version>5.7.0</version>
+		</dependency>
+	    <!-- activeMQ end-->
+		
+		<!-- activiti begin -->
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-engine</artifactId>
+			<version>5.15.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-spring</artifactId>
+			<version>5.15.1</version>
+		</dependency>
+		<dependency>
+	      <groupId>org.activiti</groupId>
+	      <artifactId>activiti-common-rest</artifactId>
+	      <version>5.15.1</version>
+	    </dependency>
+	    <!-- activiti end -->
+	
+	<!-- junit -->      
+	<dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+	      <groupId>com.h2database</groupId>
+	      <artifactId>h2</artifactId>
+	      <version>1.3.170</version>
+	      <scope>test</scope>
+	</dependency>
+	<!-- junit end -->
+	
   </dependencies>
 </project>
