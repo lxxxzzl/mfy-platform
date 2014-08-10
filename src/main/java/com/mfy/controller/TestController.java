@@ -54,7 +54,7 @@ public class TestController implements ApplicationContextAware{
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void test(){
         mailUtility.sendMail("huangcangbai");
-        System.out.println("complete concurrencyOpt.");
+        LOG.info("complete concurrencyOpt.");
     }
     
     /**
@@ -69,15 +69,15 @@ public class TestController implements ApplicationContextAware{
     	MailUtility mailUtility = (MailUtility) applicationContext.getBean("mailUtility");
     	Future<String> future = mailUtility.longOpt();
 //    	String asyncResp = future.get();
-//    	System.out.println("end get AsyncResp:" + asyncResp);
+//    	LOG.info("end get AsyncResp:" + asyncResp);
         try {
             Thread.sleep(5*1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         String asyncResp = future.get();
-    	System.out.println("end get AsyncResp:" + asyncResp);
-        System.out.println("complete testAsyncResp. time is: " + (System.currentTimeMillis()-startTime)+"ms");
+    	LOG.info("end get AsyncResp:" + asyncResp);
+        LOG.info("complete testAsyncResp. time is: " + (System.currentTimeMillis()-startTime)+"ms");
     }
     
 }

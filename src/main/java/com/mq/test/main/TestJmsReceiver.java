@@ -2,6 +2,11 @@ package com.mq.test.main;
 
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.hcb.web.filter.PostJsonParseFilter;
+
 //import javax.jms.Connection;
 //import javax.jms.ConnectionFactory;
 //import javax.jms.Destination;
@@ -12,6 +17,8 @@ import java.util.Date;
 //import org.apache.activemq.ActiveMQConnectionFactory;
 
 public class TestJmsReceiver {
+	private static Logger LOG = LoggerFactory.getLogger(TestJmsReceiver.class);
+	
 //    public static void main(String[] args) throws Exception {  
 //        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory();  
 //      
@@ -28,7 +35,7 @@ public class TestJmsReceiver {
 //            public void onMessage(Message msg) { 
 //                MapMessage message = (MapMessage) msg; 
 //                //TODO something.... 
-//                System.out.println("收到消息：" + new Date(message.getLong("count"))); 
+//                LOG.info("收到消息：" + new Date(message.getLong("count"))); 
 //                session.commit(); 
 //            } 
 //     
@@ -42,7 +49,7 @@ public class TestJmsReceiver {
 //            session.commit();  
 //      
 //            //TODO something....  
-//            System.out.println("收到消息：" + new Date(message.getLong("count")));  
+//            LOG.info("收到消息：" + new Date(message.getLong("count")));  
 //        }  
 //      
 //        session.close();  

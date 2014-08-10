@@ -2,19 +2,25 @@ package com.mfy.util;
 
 import java.util.concurrent.Future;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.hcb.web.filter.PostJsonParseFilter;
+
 @Service
 @Component
 public class MailUtility {
 
+	private static Logger LOG = LoggerFactory.getLogger(MailUtility.class);
+	
     @Async
     public void sendMail(String name) {
 
-    	System.out.println("在做发送准备工作中");
+    	LOG.info("在做发送准备工作中");
 
         try {
             Thread.sleep(5000);
@@ -24,19 +30,19 @@ public class MailUtility {
             e.printStackTrace();
         }
 
-        System.out.println("异步发送完毕");
+        LOG.info("异步发送完毕");
 
     }
     
     @Async
     public Future<String> longOpt() {
-        System.out.println("start longOpt..");
+        LOG.info("start longOpt..");
         try {
             Thread.sleep(5*1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("end longOpt");
+        LOG.info("end longOpt");
         return new AsyncResult("long opt ok");
     }
     

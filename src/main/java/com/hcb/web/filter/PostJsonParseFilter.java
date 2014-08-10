@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
@@ -17,20 +19,20 @@ import org.springframework.web.filter.OncePerRequestFilter;
  *
  */
 public class PostJsonParseFilter extends OncePerRequestFilter {
-
+	
+	private static Logger LOG = LoggerFactory.getLogger(PostJsonParseFilter.class);
+	
 	@Override
 	protected void initFilterBean() throws ServletException {
-		
 		super.initFilterBean();
-		System.out.println("PostJsonParseFilter initFilterBean");
+		LOG.info(this.getFilterName() + " initFilterBean");
 	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request,
 			HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		
-		System.out.println("PostJsonParseFilter doFilterInternal");
+		LOG.info(this.getFilterName() + " doFilterInternal");
 		filterChain.doFilter(request, response);
 	}
 

@@ -1,10 +1,14 @@
 package com.thread;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.task.TaskExecutor;
 
 public class TaskExecutorExample {
 	private TaskExecutor taskExecutor;
 
+	private static Logger LOG = LoggerFactory.getLogger(TaskExecutorExample.class);
+	
 	public TaskExecutorExample(TaskExecutor taskExecutor) {
 		this.taskExecutor = taskExecutor;
 	}
@@ -24,13 +28,13 @@ public class TaskExecutorExample {
 		}
 
 		public void run() {
-			System.out.println(message + " start");
+			LOG.info(message + " start");
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			System.out.println(message + " end");
+			LOG.info(message + " end");
 		}
 	}
 }

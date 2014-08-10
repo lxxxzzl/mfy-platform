@@ -25,7 +25,7 @@ public class LogTest {
             map.put(i+"rosen jiang", p);
             array[i]=p;
         }
-        System.out.print("OK");
+        LOG.info("OK");
     }    
 	     
 	    

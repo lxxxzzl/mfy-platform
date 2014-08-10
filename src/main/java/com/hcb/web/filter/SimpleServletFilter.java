@@ -9,26 +9,35 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 /**
  * 简单原生Servlet过滤器，仅供测试
  * @author huangcangbai
  */
 public class SimpleServletFilter implements Filter {
 
+	static Logger LOG = LoggerFactory.getLogger(SimpleServletFilter.class);
+	
+	private String filterName;
+	
 	@Override
-	public void init(FilterConfig arg0) throws ServletException {
-		System.out.println("SimpleServletFilter init");
+	public void init(FilterConfig filterConfig) throws ServletException {
+		this.filterName = filterConfig.getFilterName();
+		LOG.info(this.filterName + " init");
 	}
 
 	@Override
 	public void destroy() {
-		System.out.println("SimpleServletFilter destroy");
+		LOG.info(this.filterName + " destroy");
 	}
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain filterChain) throws IOException, ServletException {
-		System.out.println("SimpleServletFilter doFilter");
+		LOG.info(this.filterName + " doFilter");
 		filterChain.doFilter(request, response);
 	}
 	

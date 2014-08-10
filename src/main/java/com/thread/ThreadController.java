@@ -34,7 +34,7 @@ public class ThreadController implements ApplicationContextAware{
     public void test(){
     	TaskExecutorExample te = (TaskExecutorExample)applicationContext.getBean("taskExecutorExample");   
     	te.printMessages();   
-    	System.out.println("新请求进入");  
+    	LOG.info("新请求进入");  
     }
     
 }

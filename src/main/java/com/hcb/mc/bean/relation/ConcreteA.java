@@ -1,16 +1,19 @@
 package com.hcb.mc.bean.relation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class ConcreteA extends AbstractBase {
-//public class Concrete  {
-
+	private static Logger LOG = LoggerFactory.getLogger(ConcreteA.class);
+	
 	public String name = "ConcreteA";
 	
 	@Override
 	public void prt() {
-		System.out.println("ConcreteA prt");
+		LOG.info("ConcreteA prt");
 	}
 
 	public String whoami() {
