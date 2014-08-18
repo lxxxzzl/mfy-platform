@@ -28,16 +28,15 @@ public class RequestController {
 	private AbstractBase abstractBase;
 	
     /**
+     * 测试PostParserHttpServletRequestWrapper过滤器（解析post请求的消息体到request的parameter对象中）
      * http://localhost:8080/mfy-platform/request/json-parse
      * @param request
      * @param response
      */
     @RequestMapping(value="/json-parse", method =RequestMethod.POST)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
     public void jsonParse(HttpServletRequest request,HttpServletResponse response){
-    	
-    	LOG.info("request.toString()"+request.toString());
-
+    	LOG.info("request.getParameterMap(): "+request.getParameterMap());
     	LOG.info("jsonParse execute ok.");
     }
 	
