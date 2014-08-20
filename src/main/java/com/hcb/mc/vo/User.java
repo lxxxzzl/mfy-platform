@@ -1,8 +1,8 @@
 package com.hcb.mc.vo;
 
 public class User {
-	private int id = 111;
-	private String name ="aaaaaaas";
+	private int id;
+	private String name;
 	
 	public int getId() {
 		return id;
@@ -15,5 +15,9 @@ public class User {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String toString() {
+		return this.getId() + " " + this.getName();
 	}
 }

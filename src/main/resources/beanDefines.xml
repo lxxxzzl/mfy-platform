@@ -33,6 +33,9 @@
      <import resource="bpm.xml"/>
       -->
      
+     <import resource="orm.xml"/>
+      
+      
      <import resource="utils.xml"/>
      
      <context:component-scan base-package="com">
@@ -41,32 +44,7 @@
       
      <task:annotation-driven/> 
       
-    <!-- mybatis begin -->  
-    <!--  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
-        <property name="url" value="jdbc:mysql://localhost:3310/test"></property>
-        <property name="username" value="root"></property>
-        <property name="password" value=""></property>
-        <property name="maxActive" value="100"></property>
-        <property name="maxIdle" value="30"></property>
-        <property name="maxWait" value="500"></property>
-        <property name="defaultAutoCommit" value="true"></property>
-    </bean>-->
-
-   <!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="configLocation" value="classpath:MyBatis-Configuration.xml"></property>
-        <property name="dataSource" ref="dataSource" />
-    </bean>
-      
-    <bean id="userDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.mybatis.UserDao"></property>
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
-    </bean>
-
-    <bean id="userService" class="com.mybatis.UserServiceImpl">
-        <property name="userDao" ref="userDao"></property>
-    </bean>-->
-    <!-- mybatis end -->   
+    
     
     <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
         <property name="customEditors">
