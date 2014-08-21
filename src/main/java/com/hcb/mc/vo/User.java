@@ -1,9 +1,18 @@
 package com.hcb.mc.vo;
 
+import java.util.Date;
+
 public class User {
 	private int id;
 	private String name;
+	private Date opTime;
 	
+	public Date getOpTime() {
+		return opTime;
+	}
+	public void setOpTime(Date opTime) {
+		this.opTime = opTime;
+	}
 	public int getId() {
 		return id;
 	}

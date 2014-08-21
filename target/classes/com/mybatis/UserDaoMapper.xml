@@ -6,6 +6,7 @@
 		type="com.hcb.mc.vo.User">
 		<result property="id" column="id" />
 		<result property="name" column="name" />
+		<result property="opTime" column="op_time" />
 	</resultMap>
 	
     <select id="countAll" resultType="int">
@@ -13,7 +14,7 @@
     </select>
     
 	<sql id="Base_Column_List">
-        id, name
+        id, name, op_time
     </sql>
 
 	<select id="selectAll" resultMap="BaseResultMap">
@@ -31,6 +32,9 @@
 			 <if test="name != null" >
 	        	name,
 	         </if>
+	         <if test="opTime != null" >
+	        	op_time,
+	         </if>
       	</trim>
       	<trim prefix="values (" suffix=")" suffixOverrides="," >
 			 <if test="id != 0" >
@@ -38,6 +42,9 @@
 	         </if>
 			 <if test="name != null" >
 	        	#{name},
+	         </if>
+	         <if test="opTime != null" >
+	        	#{opTime},
 	         </if>
 	     </trim>
 	</insert>
