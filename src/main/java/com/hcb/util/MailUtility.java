@@ -42,7 +42,7 @@ public class MailUtility {
             e.printStackTrace();
         }
         LOG.info("end longOpt");
-        return new AsyncResult("long opt ok");
+        return new AsyncResult<String>("long opt ok");
     }
     
 }

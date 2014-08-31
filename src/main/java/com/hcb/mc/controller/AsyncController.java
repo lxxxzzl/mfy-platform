@@ -23,9 +23,9 @@ import com.hcb.util.MailUtility;
 
 @Controller
 @RequestMapping(value = "/bpmAsyncTest")
-public class BpmAsyncController implements ApplicationContextAware{
+public class AsyncController implements ApplicationContextAware{
 
-	static Logger LOG = LoggerFactory.getLogger(BpmAsyncController.class);
+	static Logger LOG = LoggerFactory.getLogger(AsyncController.class);
 	
 	private ApplicationContext applicationContext;
 	

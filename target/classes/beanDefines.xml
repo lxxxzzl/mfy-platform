@@ -29,9 +29,9 @@
     <import resource="mq.xml"/>
      -->
      
-     <!-- activiti
+     <!-- activiti -->
      <import resource="bpm.xml"/>
-      -->
+     
      
      <import resource="orm.xml"/>
       
