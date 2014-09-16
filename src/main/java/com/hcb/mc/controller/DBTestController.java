@@ -28,8 +28,11 @@ public class DBTestController {
 	@Resource
 	private TaskExecutor taskExecutor;
 	
+	private DBTestController(){
+		LOG.info("DBTestController constructor");
+	}
     /**
-     * 测试PostParserHttpServletRequestWrapper过滤器（解析post请求的消息体到request的parameter对象中）
+     * 测试并发事务访问同时读写，读不完整问题
      * http://localhost:8080/mfy-platform/db-test/dao-test
      * @param request
      * @param response

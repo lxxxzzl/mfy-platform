@@ -19,8 +19,8 @@
     <logger name="org.activiti" level="debug" /> 
     <logger name="org.springframework" level="info" />
     <logger name="org.springframework.web" level="info" />
-    <logger name="org.activiti.engine.impl.interceptor" level="info" />
-
+    <!-- logger name="org.activiti.engine.impl.interceptor" level="info" /> -->
+    <!-- <logger name="org.activiti.engine.impl.jobexecutor.AcquireJobsRunnable" level="info" /> -->
 
     <root level="INFO">
         <appender-ref ref="STDOUT" />

@@ -6,8 +6,8 @@
   <bean id="bpm-dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">  
     <property name="driverClass" value="com.mysql.jdbc.Driver" />  
     
-    <!-- <property name="url" value="jdbc:mysql://localhost:3306/bpm_cfm" />   -->
-    <property name="url" value="jdbc:mysql://localhost:3310/bpm_cfm" /> 
+    <property name="url" value="jdbc:mysql://localhost:3306/bpm_cfm" />  
+    <!-- <property name="url" value="jdbc:mysql://localhost:3310/bpm_cfm" />  -->
     <property name="username" value="root"/>  
     <property name="password" value="" />  
   </bean>  
@@ -15,12 +15,18 @@
   <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
     <property name="dataSource" ref="bpm-dataSource" />  
   </bean>  
+  
+  <bean id="bpmJobExecutor" class="org.activiti.engine.impl.jobexecutor.DefaultJobExecutor">
+  	<!-- job扫描间隔改成10分钟 -->
+  	<property name="waitTimeInMillis" value="600000"/>
+  </bean>
 
   <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">   
     <property name="dataSource" ref="bpm-dataSource" />  
     <property name="transactionManager" ref="transactionManager" />  
     <property name="databaseSchemaUpdate" value="true" />  
     <property name="jobExecutorActivate" value="true" />  
+    <property name="jobExecutor" ref="bpmJobExecutor" />  
   </bean>  
 
   <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">  

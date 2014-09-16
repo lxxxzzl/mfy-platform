@@ -22,7 +22,7 @@
      
      
      <!-- spring mvc -->
-     <import resource="springMVC.xml"/> 
+     <!-- <import resource="springMVC.xml"/>  -->
      
      
      <!-- mq begin 
@@ -38,9 +38,11 @@
       
      <import resource="utils.xml"/>
      
-     <context:component-scan base-package="com">
-	   <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-	 </context:component-scan>
+     <import resource="memcached.xml"/>
+     
+     
+     
+     <context:component-scan base-package="com"/>
       
      <task:annotation-driven/> 
       

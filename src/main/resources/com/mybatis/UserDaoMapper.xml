@@ -60,4 +60,24 @@
 		        id = #{id}
 	</update>
     
+    
+    
+   <!--  <select id="queryList" resultMap="cfmAlternateLog">
+		SELECT
+		id,bill_id,bill_type,vendor_id,alternate_info,send_status,op_system,op_time,op_uid,op_name,del_flag
+		FROM
+		cfm_alternate_log
+		<where>
+			<if test="billId > 0">AND bill_id=#{billId}</if>
+			<if test="billType > 0">AND bill_type=#{billType}</if>
+			<if test="delFlag > -1">AND del_flag=#{delFlag}</if>
+		</where>
+		ORDER BY id DESC
+	</select> -->
+	
+    
+    <select id="selectGetLockByKey" resultType="int">
+		SELECT GET_LOCK(#{key},#{timeout}) AS get_lock
+	</select>
+	
 </mapper>
