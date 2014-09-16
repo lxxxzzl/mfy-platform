@@ -51,11 +51,11 @@ public class MemcachedTestController {
     	
     	
     	int value_1 = 1;
-		boolean addState_1 = memcachedManager.add(key, value_1, 60);
+		boolean addState_1 = memcachedManager.add(key, value_1, 20);
 		LOG.info("memcached-test/simple mem-value=" + memcachedManager.get(key) + " addState="+addState_1);
 		
 		int value_2 = 2;
-		boolean addState_2 = memcachedManager.add(key, value_2, 60);
+		boolean addState_2 = memcachedManager.add(key, value_2, 20);
     	LOG.info("memcached-test/simple mem-value=" + memcachedManager.get(key)+ " addState="+addState_2);
     }
     
