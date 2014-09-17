@@ -22,7 +22,7 @@
             <value>"SECONDS"</value>
         </property> -->
         <property name="timeOut">
-            <value>5</value>
+            <value>7</value>
         </property>
         <property name="expiration">
             <value>1</value>
