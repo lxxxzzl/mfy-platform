@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.hcb.web.wrapper.PostParserHttpServletRequestWrapper;
+
 /**
  * POST请求json入参解析过滤器
  * 将POST请求json格式入参存入request对象的parameters中<br>
@@ -32,8 +34,11 @@ public class PostJsonParseFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request,
 			HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		//LOG.info(this.getFilterName() + " doFilterInternal");
-		filterChain.doFilter(request, response);
+		LOG.info(this.getFilterName() + " doFilterInternal");
+//		将POST请求json格式入参存入request对象的parameters中
+		PostParserHttpServletRequestWrapper postParserHttpServletRequestWrapper = 
+				new PostParserHttpServletRequestWrapper(request);
+		filterChain.doFilter(postParserHttpServletRequestWrapper, response);
 	}
 
 }

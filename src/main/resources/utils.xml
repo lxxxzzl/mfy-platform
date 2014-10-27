@@ -5,10 +5,10 @@
 
 	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor"> 
 	    <!-- corePoolSize 同时运行的线程数量 -->    
-	    <property name="corePoolSize" value="3" />     
+	    <property name="corePoolSize" value="100" />     
 	    
 	    <!-- maxPoolSize+queueCapacity 添加的最多线程数量 -->  
-	    <property name="maxPoolSize" value="10" />     
+	    <property name="maxPoolSize" value="300" />     
 	    <property name="queueCapacity" value="300" />  
 	</bean>
 	  
