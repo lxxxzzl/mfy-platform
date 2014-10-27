@@ -16,7 +16,7 @@
         </encoder>
     </appender>
 
-    <logger name="org.activiti" level="debug" /> 
+    <logger name="org.activiti" level="info" /> 
     <logger name="org.springframework" level="info" />
     <logger name="org.springframework.web" level="info" />
     <!-- logger name="org.activiti.engine.impl.interceptor" level="info" /> -->

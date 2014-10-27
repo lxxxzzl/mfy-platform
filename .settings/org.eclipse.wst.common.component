@@ -7,6 +7,9 @@
         <dependent-module archiveName="activiti-engine-5.15.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/activiti-engine/activiti-engine">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="activiti-bpmn-model-5.15.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/activiti-bpmn-model/activiti-bpmn-model">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="activiti-spring-5.15.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/activiti-spring/activiti-spring">
             <dependency-type>uses</dependency-type>
         </dependent-module>

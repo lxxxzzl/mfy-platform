@@ -31,7 +31,15 @@ public class BpmController {
         return "ok";
     }
 
-
+    //http://localhost:8080/mfy-platform/bpm/start-job-process/123.do
+    @RequestMapping( value="/start-job-process/{id}.do" )
+    public String startJobProcess(HttpServletRequest request,HttpServletResponse response,@PathVariable String id){
+    	LOG.info("begin start-job-process:" + id );
+    	ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneJobAndUserTaskProcess");
+    	LOG.info("start-job-process, process id:" + processInstance.getId());
+        return "ok";
+    }
+    
     
 }
 

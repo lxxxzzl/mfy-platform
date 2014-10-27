@@ -17,8 +17,8 @@
   </bean>  
   
   <bean id="bpmJobExecutor" class="org.activiti.engine.impl.jobexecutor.DefaultJobExecutor">
-  	<!-- job扫描间隔改成10分钟 -->
-  	<property name="waitTimeInMillis" value="600000"/>
+  	<!-- job扫描间隔30s -->
+  	<property name="waitTimeInMillis" value="30000"/>
   </bean>
 
   <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">   

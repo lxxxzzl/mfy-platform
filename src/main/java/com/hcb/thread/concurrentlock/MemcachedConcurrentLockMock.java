@@ -16,7 +16,8 @@ public class MemcachedConcurrentLockMock implements Runnable {
 		
 	private final static int SLEEP_TIME = 2;
 	
-	private final static String KEY_PREFIX = "RES.CFM";
+	private final static String KEY_PREFIX = "#RES.CFM#";
+	
 	/**
 	 * 采用memcached方式实现的并发锁
 	 */

@@ -18,7 +18,7 @@ public interface ConcurrentLock {
 	/**
 	 * 将指定的key值的item锁定
 	 * @param key
-	 * @param maxWaitTime 锁获取最大等待时间
+	 * @param maxWaitTime 锁获取最大等待时间(单位s)
 	 * @return 是否锁定成功
 	 */
 	boolean lock(String key, int maxWaitTime);
@@ -29,4 +29,11 @@ public interface ConcurrentLock {
 	 * @return 是否解锁成功
 	 */
 	boolean unlock(String key);
+	
+	
+	/**
+	 * 同步锁激活标志
+	 * @param active
+	 */
+	void setActive(boolean active);
 }

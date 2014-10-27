@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.hcb.cache.MemcachedManager;
 
+
+
 /**
  * 采用memcached方式实现的并发锁
  * 注意: 该接口的任何方法都不会抛任何异常，确保不中断正常业务功能
@@ -17,7 +19,7 @@ import com.hcb.cache.MemcachedManager;
 @Service
 public class MemcachedConcurrentLock implements ConcurrentLock {
 
-	private static Logger LOG = LoggerFactory.getLogger(MemcachedConcurrentLock.class);
+	private static Logger LOG = LoggerFactory.getLogger("MemcachedConcurrentLock");
 	
     /**
      * memchached客户端
@@ -26,22 +28,22 @@ public class MemcachedConcurrentLock implements ConcurrentLock {
     private MemcachedManager memcachedManager;
     
 	/**
-	 * 缓存有效时长
+	 * 缓存有效时长(单位s)
 	 */
 	//TODO: set default value
-    private int expiration = 15;
+    private int expiration = 5;
 	
 	/**
-	 * 锁获取最大等待时间
+	 * 锁获取最大等待时间(单位s)
 	 */
 	//TODO: set default value
-	private int defalutMaxWaitTime = 200; 
+	private int defalutMaxWaitTime = 5; 
 	
 	/**
-	 * 获取锁重试时间间隔
+	 * 获取锁重试时间间隔(单位ms)
 	 */
 	//TODO: set default value
-	private int retryGetLockTime = 1; 
+	private int retryGetLockTime = 500; 
 	
 	/**
 	 * 并发锁激活标记
@@ -62,17 +64,32 @@ public class MemcachedConcurrentLock implements ConcurrentLock {
 	public boolean lock(String key, int maxWaitTime) {
 		boolean lockSuccess = false;
 		try {
+			if (null == key || "".equals(key.trim())) {
+				throw new Exception("Illegal param: key is empty");
+			}
+			
+			
+			if (maxWaitTime < 0) {
+				throw new Exception("Illegal param: maxWaitTime is minus");
+			}
+			
+			if (maxWaitTime > 60*10) {
+				throw new Exception("Illegal param: maxWaitTime larger than 600s");
+			}
+			
 			lockSuccess = this.lockUnCatchException(key, maxWaitTime);
 		} catch (Throwable e) {
 			LOG.error("get lock fail. key=" + key, e); 
 		}
+		
+		
 		return lockSuccess; 
 	}
 
 	/**
 	 * 获取锁（不catch runtime exception）
 	 * @param key
-	 * @param maxWaitTime
+	 * @param maxWaitTime 锁获取最大等待时间(单位s)
 	 * @return
 	 */
 	private boolean lockUnCatchException(String key, int maxWaitTime) { 
@@ -93,11 +110,11 @@ public class MemcachedConcurrentLock implements ConcurrentLock {
 		lockSuccess =  memcachedManager.add(key, DEFAULT_ITEM_VALUE, expiration);
 		if (!lockSuccess) {
 			//获取锁失败
-			int stepCount = maxWaitTime/retryGetLockTime;
+			int stepCount = maxWaitTime * 1000/retryGetLockTime;
 			for (int i=0; i < stepCount; i++) {
 				try {
 					//单位毫秒
-					Thread.sleep(retryGetLockTime * 1000);
+					Thread.sleep(retryGetLockTime);
 				} catch (Exception e) {
 					LOG.error("retryGetLockTime Thread.sleep error.",e);
 				}
@@ -181,23 +198,19 @@ public class MemcachedConcurrentLock implements ConcurrentLock {
 		return defalutMaxWaitTime;
 	}
 
-	public void setDefalutMaxWaitTime(int defalutMaxWaitTime) {
-		this.defalutMaxWaitTime = defalutMaxWaitTime;
-	}
-
 	public int getExpiration() {
 		return expiration;
-	}
-
-	public void setExpiration(int expiration) {
-		this.expiration = expiration;
 	}
 	
 	public boolean isActive() {
 		return active;
 	}
 
+	@Override
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+	
+	
+	
 }
