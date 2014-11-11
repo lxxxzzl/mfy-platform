@@ -86,10 +86,9 @@ public class NewBookCity {
          
     	 if(productNewCityRelCount <=0){ 
     		result = true;
+    	 } else {
+    		 System.out.println("rel has exist. prdId:" + productId+" city:" + newCityCode);
     	 }
-    	 
-    	 //TODO: delete
-    	 //result = true;
     	 
     	 return result;
     }
@@ -140,7 +139,7 @@ public class NewBookCity {
                     			product_id,city_code,city_nameBuffer.toString(),cat_nameBuffer.toString(),cat_id,product_virtual_id_buffer.toString());
                     	
                     	resultItemBuffer.append(postStr);
-                        System.out.println(resultItemBuffer.toString());
+                        //System.out.println(resultItemBuffer.toString());
                         resultWriter.write(resultItemBuffer.toString());
                         resultWriter.newLine();
                         resultWriter.flush();
@@ -251,14 +250,14 @@ public class NewBookCity {
 		//relList.add(new ProductCityRel(1615, 1637, "常熟"));
 		
 		//syncCityCode, newCityCode, newCityName
-		relList.add(new ProductCityRel(2402, 2421, "淄博"));
-//		relList.add(new ProductCityRel(2402, 2406, "东营"));
+		//relList.add(new ProductCityRel(2402, 2421, "淄博"));
+	//	relList.add(new ProductCityRel(2402, 2406, "东营"));
+		
+		//relList.add(new ProductCityRel(2413, 2418, "威海"));
+		//relList.add(new ProductCityRel(2413, 2417, "潍坊"));
+		//relList.add(new ProductCityRel(2413, 2415, "日照"));
 //		
-//		relList.add(new ProductCityRel(2413, 2418, "威海"));
-//		relList.add(new ProductCityRel(2413, 2417, "潍坊"));
-//		relList.add(new ProductCityRel(2413, 2415, "日照"));
-//		
-//		relList.add(new ProductCityRel(1602, 1617, "泰州"));
+		relList.add(new ProductCityRel(1602, 1617, "泰州"));
 		
 		
 		
