@@ -9,13 +9,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
-/**
- * 产品新增预订城市
- * @author huangcangbai
- *
- */
 public class NewBookCity {
 
 	static int PRODUCT_ID_INDEX = 1;
@@ -26,7 +23,7 @@ public class NewBookCity {
 	
 	static String mysqlDriverClassName = "com.mysql.jdbc.Driver"; 
     
-	static String RESULT_FILE_PATH = "C:\\workpro\\script\\src\\script\\product\\DBInsert.txt";
+	static String RESULT_FILE_PATH = "C:\\workpro\\script\\src\\script\\product\\";
 	 
 	static String productDBName = "prd_nm"; 
 	static String productDBPasswrod = "4021C63E1E"; 
@@ -37,15 +34,14 @@ public class NewBookCity {
 	static String localDBUserName = "prd_nmtest";  
 	static String localDBUrl = "jdbc:mysql://10.10.30.141:3306/prd_nm?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull";
     
-    static Connection productDBConn ;
+    Connection productDBConn ;
     
-    static Connection localDBConn;
+    Connection localDBConn;
     
     String queryProductSql = "SELECT p.id,pb.product_line_dest_name FROM product p "
     		+ "join product_base pb on  p.base_id = pb.id and pb.pro_type IN (8,9,10,11,12) "
             + "join product_book_city c on c.product_id=p.id and c.del_flag=0 and c.city_code=?";
      
-	String queryProductSyncCityRelCountSql = "SELECT count(id) FROM product_book_city WHERE product_id = ? AND del_flag = 0 AND city_code = ?"; 
 	String queryProductNewCityRelCountSql = "SELECT count(id) FROM product_book_city WHERE product_id = ? AND del_flag = 0 AND city_code = ?";  
 	
 	String queryProductCatSql = "SELECT id from product_cat where city_code=%s and name= ? "; 
@@ -59,24 +55,18 @@ public class NewBookCity {
     ResultSet queryProductNewCityRelCountResultSet =null; 
     ResultSet queryProductCatResultSet =null; 
     
-    static {
-    	 try {
-			Class.forName(mysqlDriverClassName);
+    NewBookCity(int syncCityCode) {
+    	try {
+    		Class.forName(mysqlDriverClassName);
 			productDBConn = DriverManager.getConnection(productDBProxyUrl, productDBUserName,
 	                 productDBPasswrod); 
 	        localDBConn = DriverManager.getConnection(localDBUrl, localDBUserName,
-	                 localDBPasswrod); 	
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-    }
-    
-    NewBookCity (int syncCityCode) {
-    	try {
+	                 localDBPasswrod);
+	        
 			queryProductStatement = productDBConn.prepareStatement(queryProductSql);
 			queryProductStatement.setInt(1, syncCityCode);
 			queryProductResultSet = queryProductStatement.executeQuery(); 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} 
     }
@@ -84,16 +74,7 @@ public class NewBookCity {
     private boolean needInsertProductNewCityRel(int productId, int syncCityCode, int newCityCode) throws SQLException {
     	 boolean result = false;
     	
-    	 int productSyncCityRelCount = 0; 
          int productNewCityRelCount = 0; 
-         queryProductSyncCityRelCountStatement = productDBConn.prepareStatement(queryProductSyncCityRelCountSql);
-         queryProductSyncCityRelCountStatement.setInt(1, productId);
-         queryProductSyncCityRelCountStatement.setInt(2, syncCityCode);
-         queryProductSyncCityRelCountResultSet = queryProductSyncCityRelCountStatement.executeQuery();
-         if(queryProductSyncCityRelCountResultSet.next()){                   
-             productSyncCityRelCount = queryProductSyncCityRelCountResultSet.getInt(1);
-          }
-
          queryProductNewCityRelCountStatement = productDBConn.prepareStatement(queryProductNewCityRelCountSql);
          queryProductNewCityRelCountStatement.setInt(1, productId);
          queryProductNewCityRelCountStatement.setInt(2, newCityCode);
@@ -103,9 +84,13 @@ public class NewBookCity {
          }
 
          
-    	 if(productSyncCityRelCount > 0 && productNewCityRelCount <=0){ 
+    	 if(productNewCityRelCount <=0){ 
     		result = true;
     	 }
+    	 
+    	 //TODO: delete
+    	 //result = true;
+    	 
     	 return result;
     }
     
@@ -113,7 +98,10 @@ public class NewBookCity {
         try {
             BufferedWriter resultWriter = null; 
             try {
-                resultWriter = new BufferedWriter(new FileWriter(new File(RESULT_FILE_PATH)));
+            	StringBuilder sb = new StringBuilder(RESULT_FILE_PATH);
+            	sb.append(newCityName);
+            	sb.append(".txt");
+                resultWriter = new BufferedWriter(new FileWriter(new File(sb.toString())));
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -134,14 +122,22 @@ public class NewBookCity {
                     if(needInsertProductNewCityRel){
                     	int product_id = queryProductResultSet.getInt(PRODUCT_ID_INDEX);
                     	int city_code = newCityCode;
-                    	String city_name = newCityName;
+                    	StringBuilder city_nameBuffer = new StringBuilder();
+                    	city_nameBuffer.append("'");
+                    	city_nameBuffer.append(newCityName);
+                    	city_nameBuffer.append("'");
                     	
-                    	String cat_name = queryProductResultSet.getString(PRODUCT_LINE_DEST_NAME_INDEX);
+                    	StringBuilder cat_nameBuffer = new StringBuilder();
+                    	cat_nameBuffer.append("'");
+                    	cat_nameBuffer.append(queryProductResultSet.getString(PRODUCT_LINE_DEST_NAME_INDEX));
+                    	cat_nameBuffer.append("'");
+                    	
                     	int cat_id = queryProductCatResultSet.getInt(PRODUCT_CAT_ID_INDEX);
-                    	String product_virtual_id = String.valueOf(product_id) + String.valueOf(city_code);
+                    	StringBuilder product_virtual_id_buffer = new StringBuilder(String.valueOf(product_id));
+                    	product_virtual_id_buffer.append(String.valueOf(city_code));
                     	
                     	String postStr = String.format("(%s, %s, %s, %s, %s, %s);", 
-                    			product_id,city_code,city_name,cat_name,cat_id,product_virtual_id);
+                    			product_id,city_code,city_nameBuffer.toString(),cat_nameBuffer.toString(),cat_id,product_virtual_id_buffer.toString());
                     	
                     	resultItemBuffer.append(postStr);
                         System.out.println(resultItemBuffer.toString());
@@ -238,12 +234,46 @@ public class NewBookCity {
         }
 	}
 	
+	static class ProductCityRel {
+		public int syncCityCode;
+		public int newCityCode;
+		public String newCityName;
+		
+		ProductCityRel(int syncCityCode, int newCityCode, String newCityName) {
+			this.syncCityCode = syncCityCode;
+			this.newCityCode = newCityCode;
+			this.newCityName = newCityName;
+		}
+	}
+	
+	public static List<ProductCityRel> initProductCityRelLst() {
+		List<ProductCityRel> relList = new ArrayList<ProductCityRel>();
+		//relList.add(new ProductCityRel(1615, 1637, "常熟"));
+		
+		//syncCityCode, newCityCode, newCityName
+		relList.add(new ProductCityRel(2402, 2421, "淄博"));
+//		relList.add(new ProductCityRel(2402, 2406, "东营"));
+//		
+//		relList.add(new ProductCityRel(2413, 2418, "威海"));
+//		relList.add(new ProductCityRel(2413, 2417, "潍坊"));
+//		relList.add(new ProductCityRel(2413, 2415, "日照"));
+//		
+//		relList.add(new ProductCityRel(1602, 1617, "泰州"));
+		
+		
+		
+		
+		return relList;
+	}
+	
     public static void main(String[] args) {
-    	int syncCityCode = 1615;
-    	int newCityCode = 1637;
-    	String newCityName = "常熟";
-    	NewBookCity newBookCity = new NewBookCity(syncCityCode);
-    	newBookCity.fetchProductNewCityRelationInsertSql(syncCityCode, newCityCode, newCityName); 
+    	List<ProductCityRel> relList = initProductCityRelLst();
+    	for (ProductCityRel productCityRel : relList) {
+    		long startTime = System.currentTimeMillis();
+    		NewBookCity newBookCity = new NewBookCity(productCityRel.syncCityCode);
+        	newBookCity.fetchProductNewCityRelationInsertSql(productCityRel.syncCityCode, productCityRel.newCityCode, productCityRel.newCityName); 
+        	System.out.println(productCityRel.newCityName + " takes " + (System.currentTimeMillis() - startTime) + "ms");
+    	}
     }
     
 }
