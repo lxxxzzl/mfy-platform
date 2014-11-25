@@ -26,8 +26,8 @@ public class NewBookCity {
 	static String RESULT_FILE_PATH = "C:\\workpro\\script\\src\\script\\product\\";
 	 
 	static String productDBName = "prd_nm"; 
-	static String productDBPasswrod = "4021C63E1E"; 
-	static String productDBUserName = "gethuangcangbai";  
+	static String productDBPasswrod = null; 
+	static String productDBUserName = null;  
 	static String productDBProxyUrl = "jdbc:mysql://localhost:3307/" + productDBName;
 	
 	static String localDBPasswrod = "tuniu520";  
