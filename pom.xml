@@ -210,6 +210,25 @@
     </dependency>
 	<!-- ssh等远程连接工具end -->
 	
+	
+	
+	<dependency>
+    	<groupId>com.alibaba.cobar</groupId>
+    	<artifactId>cobar-client</artifactId>
+    	<version>1.0.5</version>
+        <exclusions>
+		    <exclusion>
+		       <groupId>org.springframework</groupId>
+		       <artifactId>spring</artifactId>
+		    </exclusion>
+		 </exclusions>	
+    </dependency>
+    <dependency>
+    	<groupId>com.alibaba</groupId>
+    	<artifactId>druid</artifactId>
+    	<version>1.0.0</version>
+    </dependency>
+	
   </dependencies>
   
   
