@@ -202,6 +202,33 @@
 	</dependency>
 	<!-- junit end -->
 	
+	<!-- ssh等远程连接工具 -->
+	<dependency>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+			<version>0.1.50</version>
+    </dependency>
+	<!-- ssh等远程连接工具end -->
+	
+	
+	
+	<dependency>
+    	<groupId>com.alibaba.cobar</groupId>
+    	<artifactId>cobar-client</artifactId>
+    	<version>1.0.5</version>
+        <exclusions>
+		    <exclusion>
+		       <groupId>org.springframework</groupId>
+		       <artifactId>spring</artifactId>
+		    </exclusion>
+		 </exclusions>	
+    </dependency>
+    <dependency>
+    	<groupId>com.alibaba</groupId>
+    	<artifactId>druid</artifactId>
+    	<version>1.0.0</version>
+    </dependency>
+	
   </dependencies>
   
   
