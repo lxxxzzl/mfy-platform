@@ -210,8 +210,6 @@
     </dependency>
 	<!-- ssh等远程连接工具end -->
 	
-	
-	
 	<dependency>
     	<groupId>com.alibaba.cobar</groupId>
     	<artifactId>cobar-client</artifactId>
@@ -228,28 +226,63 @@
     	<artifactId>druid</artifactId>
     	<version>1.0.0</version>
     </dependency>
-	
   </dependencies>
   
+   <profiles>
+	   <profile>
+			<id>remote</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<profile.path>config/resource/remote</profile.path>
+			</properties>
+		</profile>
+	    <profile>
+			<id>local</id>
+			<!-- <activation>
+				<activeByDefault>true</activeByDefault>
+			</activation> -->
+			<properties>
+				<profile.path>config/resource/local</profile.path>
+			</properties>
+		</profile>
+   </profiles> 	
   
   <build>
+	<resources>
+		<resource>
+			<directory>src/main/resources/${profile.path}</directory>
+			<filtering>true</filtering>
+		</resource>
+		<resource>
+			<directory>src/main/resources</directory>
+		</resource>
+    </resources>
   	<plugins>
 	  	<plugin>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-source-plugin</artifactId>
-		<version>2.2.1</version>
-		<executions>
-		    <execution>
-			<id>attach-sources</id>
-			<phase>verify</phase>
-			<goals>
-				<goal>jar-no-fork</goal>
-			</goals>
-		     </execution>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-source-plugin</artifactId>
+			<version>2.2.1</version>
+			<executions>
+			    <execution>
+					<id>attach-sources</id>
+					<phase>verify</phase>
+					<goals>
+						<goal>jar-no-fork</goal>
+					</goals>
+				</execution>
 	        </executions>
 		</plugin>
+		<plugin>  
+            <groupId>org.apache.maven.plugins</groupId>  
+            <artifactId>maven-compiler-plugin</artifactId>  
+            <configuration>  
+                <source>1.6</source>  
+                <target>1.6</target>  
+            </configuration>  
+        </plugin> 
   	</plugins>
   </build>
-  
   
 </project>

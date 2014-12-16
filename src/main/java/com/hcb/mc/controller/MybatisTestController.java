@@ -30,7 +30,7 @@ public class MybatisTestController {
      * http://localhost:8080/mfy-platform/mybatis-test/common-test
      * @param request
      * @param response
-     */
+     */     
     @RequestMapping(value="/common-test", method =RequestMethod.GET)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
     public void commonTest(HttpServletRequest request,HttpServletResponse response){
