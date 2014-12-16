@@ -38,7 +38,7 @@
       
      <import resource="utils.xml"/>
      
-     <import resource="memcached.xml"/>
+   <!--   <import resource="memcached.xml"/> -->
      
      <import resource="applicationContext.xml"/>
      

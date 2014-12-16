@@ -27,13 +27,21 @@ public class UserAtomicService {
 	 * 插入数据
 	 * @param name
 	 */
-	private void insert(String name) { 
+	public void insert(String name) { 
     	User toAddUser = new User(); 
-    	toAddUser.setName("newInsertName"); 
+    	toAddUser.setName(name); 
     	userDao.insert(toAddUser);
     	LOG.info("userDao.insert execute." );
 	}
 	
+	/**
+	 * 插入数据
+	 * @param toAddUser
+	 */
+	public void insert(User toAddUser) { 
+    	userDao.insert(toAddUser);
+    	LOG.info("userDao.insert execute." );
+	}
 	
 	/**
 	 * 查询数据
