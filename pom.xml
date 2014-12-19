@@ -231,18 +231,15 @@
    <profiles>
 	   <profile>
 			<id>remote</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<properties>
 				<profile.path>config/resource/remote</profile.path>
 			</properties>
 		</profile>
 	    <profile>
 			<id>local</id>
-			<!-- <activation>
+		    <activation>  
 				<activeByDefault>true</activeByDefault>
-			</activation> -->
+			</activation>
 			<properties>
 				<profile.path>config/resource/local</profile.path>
 			</properties>
