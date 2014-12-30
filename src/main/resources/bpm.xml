@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-   <bean id="bpm-dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:jee="http://www.springframework.org/schema/jee" 
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+       
+    <bean id="bpm-dataSource" class="org.apache.commons.dbcp.BasicDataSource">
       <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
       <property name="url" value="jdbc:mysql://localhost:${db.port}/bpm_cfm" />  
       <property name="username" value="root"></property>
@@ -11,8 +14,13 @@
       <property name="maxActive" value="20"></property>
       <property name="maxIdle" value="10"></property>
       <property name="maxWait" value="500"></property>
-   </bean>
+   </bean> 
 
+  <!-- Spring 2.0为获取J2EE资源(如tomcat中配置的数据源)提供了一个jee命名空间，通过jee命名空间，可以有效地简化J2EE资源的引用 -->
+  <!-- <jee:jndi-lookup id="bpm-dataSource" jndi-name="jdbc/bpm-dataSource" 
+       proxy-interface="javax.sql.DataSource" lookup-on-startup="false" /> -->
+	
+	
   <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
     <property name="dataSource" ref="bpm-dataSource" />  
   </bean>  
