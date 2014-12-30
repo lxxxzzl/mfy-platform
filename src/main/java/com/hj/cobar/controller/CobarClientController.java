@@ -1,4 +1,4 @@
-package com.hcb.mc.controller;
+package com.hj.cobar.controller;
 
 
 import java.util.List;
