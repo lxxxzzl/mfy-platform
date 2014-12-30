@@ -21,7 +21,7 @@
     http://www.springframework.org/schema/task/spring-task-3.0.xsd
     ">
     
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+    <!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
           destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
         <property name="url" value="jdbc:mysql://localhost:${db.port}/test" />  
@@ -30,8 +30,36 @@
         <property name="maxActive" value="20"></property>
         <property name="maxIdle" value="10"></property>
         <property name="maxWait" value="500"></property>
-    </bean>
+    </bean> -->
 
+	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
+		destroy-method="close">
+		<!-- 数据库驱动 -->
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<!-- 相应驱动的jdbcUrl -->
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:${db.port}/test" />
+		<!-- 数据库的用户名 -->
+		<property name="username" value="root" />
+		<!-- 数据库的密码 -->
+		<property name="password" value="" />
+		<!-- 检查数据库连接池中空闲连接的间隔时间，单位是分，默认值：240，如果要取消则设置为0 -->
+		<property name="idleConnectionTestPeriod" value="10" />
+		<!-- 连接池中未使用的链接最大存活时间，单位是分，默认值：60，如果要永远存活设置为0 -->
+		<property name="idleMaxAge" value="10" />
+		<!-- 每个分区最大的连接数 -->
+		<property name="maxConnectionsPerPartition" value="20" />
+		<!-- 每个分区最小的连接数 -->
+		<property name="minConnectionsPerPartition" value="10" />
+		<!-- 分区数 ，默认值2，最小1，推荐3-4，视应用而定-->
+		<property name="partitionCount" value="3" />
+		<!-- 每次去拿数据库连接的时候一次性要拿几个,默认值：2 -->
+		<property name="acquireIncrement" value="2" />
+		<!-- 缓存prepared statements的大小，默认值：0 -->
+		<property name="statementsCacheSize" value="0" />
+		<!-- 每个分区释放链接助理进程的数量，默认值：3，除非你的一个数据库连接的时间内做了很多工作，不然过多的助理进程会影响你的性能 -->
+		<property name="releaseHelperThreads" value="1" />
+	</bean>
+	
 	<bean id="txManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />

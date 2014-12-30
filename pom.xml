@@ -26,17 +26,20 @@
 		
        <!-- spring begin -->
        <dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+       <dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc-portlet</artifactId>
 			<version>${org.springframework.version}</version>
 		</dependency>
-
         <dependency>
 		  <groupId>org.springframework</groupId>
 		  <artifactId>spring-context</artifactId>
@@ -57,7 +60,6 @@
 		  <artifactId>spring-jms</artifactId>
 		  <version>3.0.7.RELEASE</version>
 		</dependency>
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
@@ -65,10 +67,15 @@
             <version>${org.springframework.version}</version>
         </dependency>
         
-		<dependency>
+ 		<!-- <dependency>
 		    <groupId>javax.annotation</groupId>
 		    <artifactId>jsr250-api</artifactId>
 		    <version>1.0</version>
+		</dependency> -->
+		<dependency>
+		    <groupId>com.google.code.findbugs</groupId>
+		    <artifactId>jsr305</artifactId>
+		    <version>2.0.3</version>
 		</dependency>
        <!-- spring end -->
        
@@ -108,7 +115,6 @@
         </dependency>
         <!-- LOG end -->
         
-        
         <dependency>
 		        <groupId>mysql</groupId>
 		        <artifactId>mysql-connector-java</artifactId>
@@ -116,11 +122,17 @@
 		</dependency>
 		
         <!-- 数据库连接池 begin -->
-        <dependency>  
+        <!-- <dependency>  
             <groupId>commons-dbcp</groupId>  
             <artifactId>commons-dbcp</artifactId>  
             <version>1.4</version>  
-        </dependency> 
+        </dependency>  -->
+        <!-- bonecp性能强于dbcp,c3p0 -->
+		<dependency>
+			<groupId>com.jolbox</groupId>
+			<artifactId>bonecp</artifactId>
+			<version>0.8.0.RELEASE</version>
+		</dependency>
         <!-- 数据库连接池 end -->
         
         <!-- mybatis begin-->
@@ -216,15 +228,15 @@
    <profiles>
 	   <profile>
 			<id>remote</id>
+			<activation>  
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<properties>
 				<profile.path>config/resource/remote</profile.path>
 			</properties>
 		</profile>
 	    <profile>
 			<id>local</id>
-		    <activation>  
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<properties>
 				<profile.path>config/resource/local</profile.path>
 			</properties>
@@ -267,4 +279,15 @@
   	</plugins>
   </build>
   
+<!--     <repositories>
+		<repository>
+		    <releases>
+                <enabled>true</enabled>
+            </releases>
+			<id>bonecp-repo</id>
+			<name>BoneCP Repository</name>
+			<url>http://jolbox.com/bonecp/downloads/maven</url>
+		</repository>
+	</repositories> -->
+	
 </project>
