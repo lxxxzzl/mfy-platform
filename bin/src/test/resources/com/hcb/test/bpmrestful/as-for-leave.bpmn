@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:bird="http://nfbird.tuniu.org/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="askForLeaveProcess" name="休假流程" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <serviceTask id="generateLeaveBill" name="生成请假单" activiti:async="true" activiti:class="com.tuniu.nfbird.sample.delegate.GenerateLeaveBillDelegate"></serviceTask>
+    <callActivity id="leaveSubprocess" name="休假" activiti:async="true" calledElement="leaveProcess"></callActivity>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="generateLeaveBill"></sequenceFlow>
+    <userTask id="leaderApprove" name="审批" activiti:async="true"></userTask>
+    <sequenceFlow id="flow5" sourceRef="generateLeaveBill" targetRef="leaderApprove"></sequenceFlow>
+    <boundaryEvent id="approveTimer" name="Timer" attachedToRef="leaderApprove" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDate>2016-03-11T12:13</timeDate>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow7" sourceRef="approveTimer" targetRef="endevent2"></sequenceFlow>
+    <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
+    <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow8" sourceRef="parallelgateway1" targetRef="leaveSubprocess"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="leaveSubprocess" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="parallelgateway2" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="leaderApprove" targetRef="parallelgateway1"></sequenceFlow>
+    <userTask id="usertask1" name="工作代理" activiti:async="true"></userTask>
+    <sequenceFlow id="flow12" sourceRef="parallelgateway1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="usertask1" targetRef="parallelgateway2"></sequenceFlow>
+    <boundaryEvent id="jobProxyTimer" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDate>2016-03-11T12:13</timeDate>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow14" sourceRef="jobProxyTimer" targetRef="parallelgateway2"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_askForLeaveProcess">
+    <bpmndi:BPMNPlane bpmnElement="askForLeaveProcess" id="BPMNPlane_askForLeaveProcess">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="200.0" y="230.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="generateLeaveBill" id="BPMNShape_generateLeaveBill">
+        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="leaveSubprocess" id="BPMNShape_leaveSubprocess">
+        <omgdc:Bounds height="55.0" width="105.0" x="810.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="1100.0" y="235.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="leaderApprove" id="BPMNShape_leaderApprove">
+        <omgdc:Bounds height="55.0" width="105.0" x="580.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="approveTimer" id="BPMNShape_approveTimer">
+        <omgdc:Bounds height="30.0" width="30.0" x="590.0" y="264.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="587.0" y="350.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="730.0" y="227.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="1000.0" y="234.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="61.0" width="105.0" x="820.0" y="337.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="jobProxyTimer" id="BPMNShape_jobProxyTimer">
+        <omgdc:Bounds height="30.0" width="30.0" x="885.0" y="384.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="235.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="320.0" y="247.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="425.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="580.0" y="247.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="605.0" y="294.0"></omgdi:waypoint>
+        <omgdi:waypoint x="604.0" y="350.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="750.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="750.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="810.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="915.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1020.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1020.0" y="234.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="1040.0" y="254.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1100.0" y="252.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="685.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="730.0" y="247.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="750.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="750.0" y="367.0"></omgdi:waypoint>
+        <omgdi:waypoint x="820.0" y="367.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="925.0" y="367.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1020.0" y="367.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1020.0" y="274.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="915.0" y="399.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1020.0" y="399.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1020.0" y="274.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:bird="http://nfbird.tuniu.org/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="Examples">
+  <process id="testOneJobProcess" isExecutable="true">
+    <startEvent id="theStart"></startEvent>
+    <sequenceFlow id="flow1" sourceRef="theStart" targetRef="javaService"></sequenceFlow>
+    <serviceTask id="javaService" name="Java service invocation" activiti:class="com.tuniu.nfbird.sample.test.oneelement.delegate.TestOneJobDelegate"></serviceTask>
+    <sequenceFlow id="flow2" sourceRef="javaService" targetRef="theEnd"></sequenceFlow>
+    <endEvent id="theEnd"></endEvent>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_testOneJobProcess">
+    <bpmndi:BPMNPlane bpmnElement="testOneJobProcess" id="BPMNPlane_testOneJobProcess">
+      <bpmndi:BPMNShape bpmnElement="theStart" id="BPMNShape_theStart">
+        <omgdc:Bounds height="35.0" width="35.0" x="160.0" y="203.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="javaService" id="BPMNShape_javaService">
+        <omgdc:Bounds height="60.0" width="100.0" x="250.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="theEnd" id="BPMNShape_theEnd">
+        <omgdc:Bounds height="35.0" width="35.0" x="420.0" y="203.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="195.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="212.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="212.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="220.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="350.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="362.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="362.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="220.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

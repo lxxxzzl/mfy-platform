@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:bird="http://nfbird.tuniu.org/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.tuniu.com">
+  <signal id="rollbackRequireConfirm" name="rollbackRequireConfirm"></signal>
+  <process id="tourbooking" name="自助游电话订单" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <userTask id="requireConfirm" name="需求确认" activiti:async="true"></userTask>
+    <boundaryEvent id="cleartimer" attachedToRef="requireConfirm" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDate>2015-03-11T12:13:14</timeDate>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <subProcess id="subprocess1" name="产品制作">
+      <startEvent id="startevent2" name="Start"></startEvent>
+      <inclusiveGateway id="inclusivegateway1" name="Inclusive Gateway"></inclusiveGateway>
+      <serviceTask id="visaCallActivity" name="签证" activiti:async="true" activiti:delegateExpression="${visaTaskDelegate}"></serviceTask>
+      <subProcess id="subprocess2" name="付款签约">
+        <extensionElements>
+          <activiti:executionListener event="start" delegateExpression="${syncOrderInfoForFmisListener}"></activiti:executionListener>
+          <activiti:executionListener event="start" delegateExpression="${orderInfoSyncListener}"></activiti:executionListener>
+          <activiti:executionListener event="start" expression="${orderWebDispStatusNotice.notify(execution, 'WAIT_SIGN')}"></activiti:executionListener>
+        </extensionElements>
+        <startEvent id="startevent3" name="Start"></startEvent>
+        <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
+        <callActivity id="signContract" name="签约" activiti:async="true" calledElement="signcontract">
+          <extensionElements>
+            <activiti:in source="dataClue" target="dataClue"></activiti:in>
+            <activiti:executionListener event="start" expression="${orderStatusSetter.setCurrentStatus(execution,31,'createSignTask')}"></activiti:executionListener>
+          </extensionElements>
+        </callActivity>
+        <receiveTask id="receivepaidstatus" name="财务收款" activiti:async="true"></receiveTask>
+        <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
+        <endEvent id="endevent1" name="End"></endEvent>
+        <sequenceFlow id="flow30" sourceRef="parallelgateway1" targetRef="receivepaidstatus"></sequenceFlow>
+        <sequenceFlow id="flow32" sourceRef="receivepaidstatus" targetRef="parallelgateway2"></sequenceFlow>
+      </subProcess>
+      <boundaryEvent id="hintClearTimer" name="清位提醒" attachedToRef="subprocess2" cancelActivity="false">
+        <timerEventDefinition>
+          <timeDate>${preClearPositionTime.getTime(execution)}</timeDate>
+        </timerEventDefinition>
+      </boundaryEvent>
+      <boundaryEvent id="backRequireConfirm" name="重新打开需求确认" attachedToRef="subprocess2" cancelActivity="false">
+        <signalEventDefinition signalRef="rollbackRequireConfirm"></signalEventDefinition>
+      </boundaryEvent>
+      <boundaryEvent id="orderClearTimer" name="清位时间" attachedToRef="subprocess2" cancelActivity="false">
+        <timerEventDefinition>
+          <timeDate>${clearPositionTime.getTime(execution)}</timeDate>
+        </timerEventDefinition>
+      </boundaryEvent>
+      <endEvent id="endevent2" name="End"></endEvent>
+      <callActivity id="signed" name="出游准备" activiti:async="true" calledElement="tourprepare">
+        <extensionElements>
+          <activiti:in source="dataClue" target="dataClue"></activiti:in>
+          <activiti:executionListener event="start" delegateExpression="${syncContractForFmisListener}"></activiti:executionListener>
+        </extensionElements>
+      </callActivity>
+      <intermediateCatchEvent id="tourBackDate" name="归来日期">
+        <timerEventDefinition>
+          <timeDate>${tourBackTime.getTime(execution)}</timeDate>
+        </timerEventDefinition>
+      </intermediateCatchEvent>
+      <intermediateCatchEvent id="destroyTimer" name="归档时间">
+        <timerEventDefinition>
+          <timeDuration>P3M</timeDuration>
+        </timerEventDefinition>
+      </intermediateCatchEvent>
+      <endEvent id="endevent3" name="End"></endEvent>
+      <endEvent id="endevent4" name="End"></endEvent>
+      <endEvent id="endevent6" name="ErrorEnd">
+        <errorEventDefinition errorRef="clearResources"></errorEventDefinition>
+      </endEvent>
+      <endEvent id="endevent7" name="ErrorEnd">
+        <errorEventDefinition errorRef="backRequireConfirm"></errorEventDefinition>
+      </endEvent>
+      <endEvent id="endevent8" name="End"></endEvent>
+      <sequenceFlow id="flow1" sourceRef="startevent2" targetRef="inclusivegateway1"></sequenceFlow>
+      <sequenceFlow id="flow2" sourceRef="inclusivegateway1" targetRef="visaCallActivity">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${visaAssertor.exist(execution)}]]></conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="flow13" sourceRef="inclusivegateway1" targetRef="subprocess2">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${1==1}]]></conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="flow14" sourceRef="visaCallActivity" targetRef="endevent2"></sequenceFlow>
+      <sequenceFlow id="flow18" sourceRef="signed" targetRef="tourBackDate">
+        <extensionElements>
+          <activiti:executionListener event="take" expression="${orderProgressNotice.notify(execution, 'READY')}"></activiti:executionListener>
+          <activiti:executionListener event="take" expression="${orderStatusSetter.setCurrentStatus(execution,16)}"></activiti:executionListener>
+        </extensionElements>
+      </sequenceFlow>
+      <sequenceFlow id="flow19" sourceRef="tourBackDate" targetRef="destroyTimer"></sequenceFlow>
+      <sequenceFlow id="flow20" sourceRef="destroyTimer" targetRef="endevent3">
+        <extensionElements>
+          <activiti:executionListener event="take" delegateExpression="${processEndStatusListener}"></activiti:executionListener>
+          <activiti:executionListener event="take" delegateExpression="${diyOrderEndStatusListener}"></activiti:executionListener>
+        </extensionElements>
+      </sequenceFlow>
+      <sequenceFlow id="flow17" sourceRef="subprocess2" targetRef="signed">
+        <extensionElements>
+          <activiti:executionListener event="take" delegateExpression="${signTimeListener}"></activiti:executionListener>
+          <activiti:executionListener event="take" expression="${orderStatusSetter.setCurrentStatus(execution,32)}"></activiti:executionListener>
+          <activiti:executionListener event="take" expression="${orderStatusSetter.setSignStatus(execution,1)}"></activiti:executionListener>
+          <activiti:executionListener event="take" expression="${orderProgressNotice.notify(execution, 'SIGN_COMLETE')}"></activiti:executionListener>
+          <activiti:executionListener event="take" expression="${sendSmsListener.send(execution, 'SIGN_FINISH')}"></activiti:executionListener>
+          <activiti:executionListener event="take" expression="${orderOnlinePaySwitchSetter.setOrderOnlinePaySwitch(execution)}"></activiti:executionListener>
+        </extensionElements>
+      </sequenceFlow>
+    </subProcess>
+    <boundaryEvent id="boundaryerror1" attachedToRef="subprocess1">
+      <errorEventDefinition errorRef="clearResources"></errorEventDefinition>
+    </boundaryEvent>
+    <boundaryEvent id="boundaryerror2" attachedToRef="subprocess1">
+      <errorEventDefinition errorRef="backRequireConfirm"></errorEventDefinition>
+    </boundaryEvent>
+    <boundaryEvent id="buyIusuranceTimer" name="购买保险提醒" attachedToRef="subprocess1" cancelActivity="false">
+      <timerEventDefinition>
+        <timeDate>${purchaseInsuranceRemindTime.getTime(execution)}</timeDate>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <serviceTask id="cancelPosition" name="清位" activiti:async="true" activiti:delegateExpression="${clearPositionDelegate}"></serviceTask>
+    <endEvent id="endevent5" name="End"></endEvent>
+    <sequenceFlow id="flow3" sourceRef="startevent3" targetRef="parallelgateway1"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="parallelgateway1" targetRef="signContract"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="signContract" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="parallelgateway2" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="backRequireConfirm" targetRef="endevent7"></sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="orderClearTimer" targetRef="endevent6"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="startevent1" targetRef="requireConfirm"></sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="requireConfirm" targetRef="subprocess1">
+      <extensionElements>
+        <activiti:executionListener event="take" expression="${orderStatusSetter.setCurrentStatus(execution,4)}"></activiti:executionListener>
+        <activiti:executionListener event="take" expression="${orderProgressNotice.notify(execution, 'HAS_OCCUPY')}"></activiti:executionListener>
+        <activiti:executionListener event="take" expression="${sendSmsListener.send(execution, 'REMIND_OF_OCCUPY')}"></activiti:executionListener>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="flow21" sourceRef="hintClearTimer" targetRef="endevent4">
+      <extensionElements>
+        <activiti:executionListener event="take" delegateExpression="${clearPositionReminder}"></activiti:executionListener>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="flow24" sourceRef="boundaryerror1" targetRef="cancelPosition"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="cancelPosition" targetRef="requireConfirm">
+      <extensionElements>
+        <activiti:executionListener event="take" expression="${orderProgressNotice.notify(execution, 'AUTO_RELEASE')}"></activiti:executionListener>
+        <activiti:executionListener event="take" expression="${orderStatusSetter.setCurrentStatus(execution,17)}"></activiti:executionListener>
+        <activiti:executionListener event="take" expression="${sendSmsListener.send(execution, 'NOTICE_OF_RELEASE')}"></activiti:executionListener>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="flow26" sourceRef="boundaryerror2" targetRef="requireConfirm"></sequenceFlow>
+    <sequenceFlow id="flow27" sourceRef="subprocess1" targetRef="endevent5"></sequenceFlow>
+    <sequenceFlow id="flow28" sourceRef="cleartimer" targetRef="cancelPosition"></sequenceFlow>
+    <sequenceFlow id="flow29" sourceRef="buyIusuranceTimer" targetRef="endevent8">
+      <extensionElements>
+        <activiti:executionListener event="take" delegateExpression="${purchaseInsuranceReminder}"></activiti:executionListener>
+      </extensionElements>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_tourbooking">
+    <bpmndi:BPMNPlane bpmnElement="tourbooking" id="BPMNPlane_tourbooking">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="10.0" y="345.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="requireConfirm" id="BPMNShape_requireConfirm">
+        <omgdc:Bounds height="55.0" width="105.0" x="80.0" y="335.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="cleartimer" id="BPMNShape_cleartimer">
+        <omgdc:Bounds height="30.0" width="30.0" x="155.0" y="370.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="subprocess1" id="BPMNShape_subprocess1">
+        <omgdc:Bounds height="618.0" width="821.0" x="240.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startevent2" id="BPMNShape_startevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="290.0" y="283.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="inclusivegateway1" id="BPMNShape_inclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="370.0" y="280.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="visaCallActivity" id="BPMNShape_visaCallActivity">
+        <omgdc:Bounds height="55.0" width="105.0" x="338.0" y="380.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="subprocess2" id="BPMNShape_subprocess2">
+        <omgdc:Bounds height="391.0" width="571.0" x="450.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startevent3" id="BPMNShape_startevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="510.0" y="260.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="590.0" y="257.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="signContract" id="BPMNShape_signContract">
+        <omgdc:Bounds height="55.0" width="105.0" x="700.0" y="340.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="receivepaidstatus" id="BPMNShape_receivepaidstatus">
+        <omgdc:Bounds height="55.0" width="105.0" x="690.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="850.0" y="238.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="935.0" y="241.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="hintClearTimer" id="BPMNShape_hintClearTimer">
+        <omgdc:Bounds height="30.0" width="30.0" x="721.0" y="460.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="backRequireConfirm" id="BPMNShape_backRequireConfirm">
+        <omgdc:Bounds height="30.0" width="30.0" x="440.0" y="138.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="orderClearTimer" id="BPMNShape_orderClearTimer">
+        <omgdc:Bounds height="30.0" width="30.0" x="510.0" y="450.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="373.0" y="470.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="signed" id="BPMNShape_signed">
+        <omgdc:Bounds height="55.0" width="105.0" x="870.0" y="530.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="tourBackDate" id="BPMNShape_tourBackDate">
+        <omgdc:Bounds height="35.0" width="35.0" x="905.0" y="620.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="destroyTimer" id="BPMNShape_destroyTimer">
+        <omgdc:Bounds height="35.0" width="35.0" x="820.0" y="620.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="750.0" y="620.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
+        <omgdc:Bounds height="35.0" width="35.0" x="718.0" y="540.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
+        <omgdc:Bounds height="35.0" width="35.0" x="510.0" y="550.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
+        <omgdc:Bounds height="35.0" width="35.0" x="350.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent8" id="BPMNShape_endevent8">
+        <omgdc:Bounds height="35.0" width="35.0" x="800.0" y="560.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="220.0" y="574.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror2" id="BPMNShape_boundaryerror2">
+        <omgdc:Bounds height="30.0" width="30.0" x="230.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="buyIusuranceTimer" id="BPMNShape_buyIusuranceTimer">
+        <omgdc:Bounds height="30.0" width="30.0" x="870.0" y="560.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="cancelPosition" id="BPMNShape_cancelPosition">
+        <omgdc:Bounds height="55.0" width="105.0" x="80.0" y="560.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
+        <omgdc:Bounds height="35.0" width="35.0" x="1120.0" y="351.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="610.0" y="257.0"></omgdi:waypoint>
+        <omgdi:waypoint x="613.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="187.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="795.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="869.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="870.0" y="238.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="325.0" y="300.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="300.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="390.0" y="320.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="380.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="410.0" y="300.0"></omgdi:waypoint>
+        <omgdi:waypoint x="450.0" y="275.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="390.0" y="435.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="470.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="922.0" y="585.0"></omgdi:waypoint>
+        <omgdi:waypoint x="922.0" y="620.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="905.0" y="637.0"></omgdi:waypoint>
+        <omgdi:waypoint x="855.0" y="637.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="820.0" y="637.0"></omgdi:waypoint>
+        <omgdi:waypoint x="785.0" y="637.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="735.0" y="471.0"></omgdi:waypoint>
+        <omgdi:waypoint x="922.0" y="530.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="545.0" y="277.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="277.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="610.0" y="297.0"></omgdi:waypoint>
+        <omgdi:waypoint x="610.0" y="362.0"></omgdi:waypoint>
+        <omgdi:waypoint x="700.0" y="367.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="805.0" y="367.0"></omgdi:waypoint>
+        <omgdi:waypoint x="870.0" y="367.0"></omgdi:waypoint>
+        <omgdi:waypoint x="870.0" y="278.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="890.0" y="258.0"></omgdi:waypoint>
+        <omgdi:waypoint x="935.0" y="258.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="440.0" y="153.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="525.0" y="480.0"></omgdi:waypoint>
+        <omgdi:waypoint x="527.0" y="550.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="45.0" y="362.0"></omgdi:waypoint>
+        <omgdi:waypoint x="80.0" y="362.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="185.0" y="362.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="369.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="736.0" y="490.0"></omgdi:waypoint>
+        <omgdi:waypoint x="735.0" y="540.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="220.0" y="589.0"></omgdi:waypoint>
+        <omgdi:waypoint x="185.0" y="587.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="132.0" y="560.0"></omgdi:waypoint>
+        <omgdi:waypoint x="132.0" y="390.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="230.0" y="185.0"></omgdi:waypoint>
+        <omgdi:waypoint x="132.0" y="184.0"></omgdi:waypoint>
+        <omgdi:waypoint x="132.0" y="335.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="1061.0" y="369.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1120.0" y="368.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="170.0" y="400.0"></omgdi:waypoint>
+        <omgdi:waypoint x="132.0" y="560.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
+        <omgdi:waypoint x="870.0" y="575.0"></omgdi:waypoint>
+        <omgdi:waypoint x="835.0" y="577.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
